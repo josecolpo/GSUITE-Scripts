@@ -1,0 +1,6 @@
+Introdução:
+Script's destinados ao pacote GSuite do Google para automação de tarefas, plataforma de desenvolvimento é a Google App Script.
+
+Funções:
+Interfaces com HTML, Manipulação de Documentos(CRUD para todos os arquivos/aplicativos do google), 
+métodos POST e GET privados e públicos, envio de e-mails e CRUD do drive.
