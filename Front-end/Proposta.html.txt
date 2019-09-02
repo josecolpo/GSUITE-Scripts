@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="author" content="TI PAP">
+    <title>PAP - Solicitação de Orçamento</title>
+    <!-- inicio css -->
+    <?!= httpIncluirArquivo('Css'); ?>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+	<!-- final css -->
+</head>
+
+<body>
+	<!-- navegação principal -->
+    <?!= httpIncluirArquivo('Menu'); ?>
+	<!-- final navegação principal -->	
+    
+    <!-- inicio formulario -->
+    <div style="" class="container">
+        <div class="col-md-8 ml-auto mr-auto" style="padding-top: 80px;">
+            <div class="card container">
+
+                <div style="margin-top: 30px;" class="col-md-12">
+                    <div>
+                        <h2 style="text-align: left">
+					<strong>Solicitação de Orçamento</strong>
+				</h2>
+                    </div>
+                </div>
+
+                <form target="dummyframe" onsubmit="return enviarFormulario();" id="uploadForm" action="https://script.google.com/a/pap.com.br/macros/s/AKfycbzNGJCD72oid9nGaQaYDIY-LsPCay3jYhBM6R0oGVpSwmTdp6oO/exec" method="POST">
+
+                    <div class="col-md-12">
+                        <div>
+                            <h3 style="text-align: left;"><small>Preencha os campos abaixo</small></h3>
+                        </div>
+                    </div>
+                    
+                    <input name="formulario" type="text" value="orcamento" hidden>
+                    
+                    <input name="consultor" type="text" value="<?= Session.getActiveUser().getEmail().toString(); ?>" hidden>
+                    
+                    <div class="col-md-12">
+                        <div class="title">
+                            <h4>Modelo</h4>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input checked class="form-check-input" type="radio" name="modelo_escolha" value="0">Marcas
+                                <span class="circle">
+								<span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="modelo_escolha" value="1">Patentes
+                                <span class="circle">
+								<span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="title">
+                            <h4>Destinatário</h4>
+                        </div>
+                    </div>
+					
+					<input name="pais" id="inputEscondidoPais" type="text" hidden>
+					
+                    <div class="col-md-11 ml-auto mr-auto">
+                    <div class="">
+                    <div class="btn-group bootstrap-select">
+                    <select onchange="verificaPaisMulticlasse();" id="dropdownPaisesAgentes" name="metodo" class="selectpicker" data-style="select-with-transition" title="Single Select" data-size="7" tabindex="-98">
+                    <option  class="bs-title-option" value="País">País</option>
+                    </select>
+                    </div>
+                    </div>
+					</div>
+                    
+                    <div id="lembretePaisMulticlasse">
+                    <div class="col-md-11 ml-auto mr-auto">
+                    <div class="form-group bmd-form-group">
+                    <a style="color: green;">* Este País aceita Multiclasses<br /><a style="color: green;" id="lembretePaisMulticlasseSM">** Sem misturar classes de produtos e classes de serviços</a></a>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="title">
+                            <h4>Serviço</h4>
+                        </div>
+                    </div>
+
+                    <input name="servicoNome" id="servicoNome" type="text" hidden>
+                    <input name="servicoClasse" id="servicoClasse" type="text" hidden>
+                    <input name="servicoQuantidade" id="servicoQuantidade" type="text" hidden>
+
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div style="padding-top: 8px;" class="form-group bmd-form-group">
+                            <button type="button" style="background-color: #ffb74d;" data-toggle="modal" data-target="#modalAddServicos" class="btn btn-primary btn-fab btn-round">
+                                <i class="material-icons">add</i>
+                                <div class="ripple-container"></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-11 ml-auto mr-auto">
+                    <div class="form-group bmd-form-group">
+                        <div class="table-responsive table-striped" style="border: solid #f1f1f1;">
+                            <table id="tabelaServicos" class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="border-bottom: 0px; padding-bottom: 0px;">Nenhum serviço selecionado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+					
+					<div class="col-md-12" hidden>
+                        <div class="title">
+                            <h4>Agente</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-md-11 ml-auto mr-auto" hidden>
+                        <div class="title">
+                            <h5>Destinatário</h5>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="agente_escolha" value="0" checked>Prioritário
+                                <span class="circle">
+								<span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="agente_escolha" value="1">Todos
+                                <span class="circle">
+								<span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+					
+					<div class="col-md-11 ml-auto mr-auto" hidden>
+						<div class="form-group bmd-form-group">
+							<div class="row">
+								<div class="col">
+									<div class="form-group bmd-form-group is-filled">
+										<label class="label-control bmd-label-static">Prazo Resposta</label>
+										<input name="prazoResposta" id="inputPrazoEntrega" type="text" class="form-control datepicker" value="">
+									</div>
+								</div>
+								<div class="col">
+									<div style="margin-top: 35px;" class="form-check">
+											<label class="form-check-label">
+											<input class="form-check-input" onclick="desabilitarInputPrazoEntrega(this)" type="checkbox" value="">Desabilitar
+											<span class="form-check-sign">
+												<span class="check"></span>
+											</span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div style="text-align:right" class="form-group bmd-form-group">
+							<button style="background-color:#ffb74d; color:#fafafa; min-width: 122.2px;min-height: 41px;" class="btn">
+								<i id="botaoEnviarIcone" class="material-icons">done</i>
+								<a id="botaoEnviarTexto"><strong>Enviar</strong></a>
+								<img id="botaoEnviarLoading" style="display:none" src="https://drive.google.com/uc?export=view&id=1nK3xFMJrC73oj_QKhLQrp-IRgtjhyvBx">
+								<div class="ripple-container"></div>
+							</button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="width:0;height:0;border:0; border:none;"></iframe>
+
+                <div class="container" id="mensagemDeConfirmacao" style="display:none">
+                    <div class="col-md-12">
+                        <div>
+                            <h3 style="text-align: left;"><small>Obrigado por utilizar o formulário</small></h3>
+                            <h4 style="text-align: left;"><small><a onclick="atualizarPagina();" style="cursor:pointer; color:black;">Clique aqui para recomeçar</a></small></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+            </div>
+        </div>
+    </div>
+
+<?!= httpIncluirArquivo('Rodapé'); ?>
+
+    <!-- inicio js -->
+    <?!= httpIncluirArquivo('Js'); ?>
+	<!-- final js -->
+    
+	<script>
+		//script para atualizar a pagina
+		function atualizarPagina(){
+			window.open('https://script.google.com/a/pap.com.br/macros/s/AKfycbyI-KTMjSOR5m-Al5a3HRHpIUfX-c6Zr2NJ52LDWYToJiOxRq3X/exec?formulario=orcamento', '_top');
+		}
+	</script>
+    <!-- iniciar data picker -->
+	<script>
+		$(document).ready(function() {
+			materialKit.initFormExtendedDatetimepickers();
+		});
+	</script>
+	<!-- ao enviar o formulario -->
+	<script>
+		function enviarFormulario(){
+            if(verificaPais() == false){ return false; }
+			if(verificaServicos() == false){ return false; }
+			configurarPais();
+            configurarServicosFormulario();
+			configurarLoading();
+            limparFormulario();
+			return true;
+        }
+	</script>
+	<script>
+	Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+	}
+
+	var date = new Date();
+	date = date.addDays(15);
+
+	$("#inputPrazoEntrega").val(date.getDate() + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear());
+	
+	function desabilitarInputPrazoEntrega(checkbox){
+		if(document.getElementById("inputPrazoEntrega").disabled){
+			console.log("Entrou no já está desabilitado");
+			$("#inputPrazoEntrega").val(date.getDate() + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear());
+			$('#inputPrazoEntrega').prop('disabled', false);
+		}else{
+			$("#inputPrazoEntrega").val("");
+			document.getElementById("inputPrazoEntrega").setAttribute("disabled","true");
+		}
+	}
+	
+	</script>
+	<!-- final data picker -->
+    
+    <!-- inicio modal buscar servicos -->
+    <div class="modal fade" id="modalAddServicos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div style="border-bottom: 0px solid #e9ecef;" class="modal-header">
+                    <h4 class="modal-title">Buscar Serviço</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="form-group bmd-form-group">
+                                    <label for="exampleInput1" class="bmd-label-floating">Pesquisar</label>
+                                    <input id="pesquisarServico" maxlength="120" type="text" class="form-control">
+                                    <span class="bmd-help">Encontrar palavra-chave</span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div style="padding-top: 8px;text-align: center;" class="form-group bmd-form-group">
+                                    <button type="button" style="background-color: #ffb74d;" class="btn btn-primary btn-fab btn-round">
+                                        <i class="material-icons">search</i>
+                                        <div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md-12"></div>
+
+                    <div id="tabelaNenhumResultado" class="col-md-11 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="padding-left:90px;">Nenhum resultado encontrado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="tabelaResultado" class="col-md-11 ml-auto mr-auto">
+                        <div class="table-responsive">
+                            <table id="tabelaTaxas" class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Resultados encontrados</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-top: 0px solid #e9ecef;" class="modal-footer">
+                    <button id="confirmarTaxas" style="background-color: #757575;" type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- final modal buscar servicos -->
+    
+    <script>
+		function verificaPais(){
+			if($("#dropdownPaisesAgentes").val() == "País"){
+				alert("Selecione o país para envio do orçamento.");
+				return false;
+			}
+		}
+		function verificaServicos(){
+			if(quantidadeLinhaTabelaTaxas <= 0){
+				alert("Selecione o serviço para envio do orçamento.");
+				return false;
+			}
+		}
+        function limparFormulario(){
+			setTimeout(function(){ 
+				document.getElementById("uploadForm").setAttribute("style","display:none;");
+				document.getElementById("mensagemDeConfirmacao").setAttribute("style","display:contents;");
+			}, 3000);
+        }
+		
+		function configurarLoading(){
+			setTimeout(function(){ 
+				document.getElementById('botaoEnviarIcone').setAttribute("style", "display:none;");
+				document.getElementById('botaoEnviarTexto').setAttribute("style", "display:none;");
+				document.getElementById('botaoEnviarLoading').setAttribute("style", "max-width: 17px; display: initial;");
+			}, 75);
+		}
+		
+        function configurarServicosFormulario(){
+        var arrayNomes = new Array();
+        var arrayClasses = new Array();
+        var arrayQuantidades = new Array();
+        
+        $('#tabelaServicos tbody > tr').each(function(){
+        var id = this.id.replace("linhaTaxa", "");
+        var descricao = $("#inputDescricao"+id).text();
+        var classe = $("#inputClasse"+id).val();
+        var honorario = $("#inputHon"+id).val();
+
+        arrayNomes.push(id);
+        arrayClasses.push(classe);
+        arrayQuantidades.push(honorario);        
+        });
+        $("#servicoNome").val(JSON.stringify({"data" : arrayNomes}));
+        $("#servicoClasse").val(JSON.stringify({"data" : arrayClasses}));
+        $("#servicoQuantidade").val(JSON.stringify({"data" : arrayQuantidades}));
+        }
+		function configurarPais(){
+			$("#inputEscondidoPais").val($("#dropdownPaisesAgentes").val());
+		}
+	</script>    
+    <!-- listar o botao de dropdown dos paises -->
+    <script async>
+    var dados = new Array();
+    <? var data = dados;
+      for (var i = 0; i < data.length; i++){ ?>
+        dados.push(new Array());
+        <? for (var j=0;j<data[i].length;j++){ ?>  
+        dados[<?= i; ?>].push(<?= data[i][j]; ?>);
+        <? } ?>
+    <? } ?>
+    function setDropdownPaisesAgentes(){
+    for(var i=0; i<dados[0].length; i++){
+    if(dados[0][i] == ""){ break; }
+    //$('#dropdownPaisesAgentes').append("<a onclick='setInputPais(this);' class='dropdown-item' href='#pablo'>"+ dados[0][i] + "</a>");
+    $('#dropdownPaisesAgentes').append("<option value="+ dados[0][i] +">"+ dados[0][i] +"</option>");
+    }
+    }
+    setDropdownPaisesAgentes();
+    </script>
+    <!-- javascript para a tabela serviços -->
+    <script>  var dados = ""; var dadosHonorarios = ""; var dadosTaxas = ""; var quantidadeLinhaTabelaTaxas = 0; var postLink = "https://script.google.com/macros/s/AKfycbyMdse-5c3miN1oQux7Wu5VdAAgWTUlW0qoFT7kP8-EJvJXiW_E/exec"; var postingDados = $.post(postLink, {  opcaoDadosPost: 2 }); postingDados.done(function(data) {  dados = data.data;  dados = dados.split(";");  inserirDadosNaTabelaServicos();  console.log("carregou todos os serviços"); }); exibeNenhumResultado(); $(document).ready(function() {  $("#pesquisarServico").change(function() {   exibeResultadosPesquisa(buscarServico($("#pesquisarServico").val()));  }); });  function enviarTabelaTaxas(id, servico, honorario, taxas) {  setTimeout(function() {   $("#checkboxLinhaResultado" + id).prop("disabled", true);   $("#nomeResultado" + id).prop("style", "text-decoration-line:line-through;");  }, 300);  if (quantidadeLinhaTabelaTaxas <= 0) {   $('#tabelaServicos tr').remove();   $('#tabelaServicos > thead').append('<tr><th><strong>Descrição</strong></th><th><strong>Classe</strong></th><th><strong>Quantidade</strong></th></tr>');  }  $('#tabelaServicos > tbody:last-child').append('<tr id="linhaTaxa' + id + '"><td id="inputDescricao' + id + '">' + servico + '</td><td><input name="valorClasse" type="text" value="" class="form-control" id="inputClasse' + id + '"></td><td><input onchange="" name="valorDes" type="number" value="1" class="form-control inputTabelaServico" id="inputHon' + id + '"></td><td><button onclick="excluirLinhaTabelaTaxas(' + id + ')" type="button" rel="tooltip" class="btn btn-danger btn-link btn-just-icon btn-sm excluirLinhaTaxa" data-original-title="Excluir" title="Excluir"><i class="material-icons">close</i><div class="ripple-container"></div></button></td></tr>');  quantidadeLinhaTabelaTaxas = quantidadeLinhaTabelaTaxas + 1; }  function excluirLinhaTabelaTaxas(id) {  $("#linhaTaxa" + id).prop("style", "transition:opacity 500ms ease 150ms; opacity:0;");  setTimeout(function() {   $('#linhaTaxa' + id).remove();  }, 500);  $("#checkboxLinhaResultado" + id).prop("disabled", false);  $("#checkboxLinhaResultado" + id).prop('checked', false);  $("#nomeResultado" + id).prop("style", "text-decoration-line: blink;");  quantidadeLinhaTabelaTaxas = quantidadeLinhaTabelaTaxas - 1;  if (quantidadeLinhaTabelaTaxas <= 0) {   $('#tabelaServicos tr').remove();   $('#tabelaServicos th').remove();   $('#tabelaServicos > thead').append('<tr><th style="border-bottom: 0px; padding-bottom: 0px;">Nenhum serviço selecionado</th><th style="border-bottom: 0px;"></tr>');  } }  function inserirDadosNaTabelaServicos() {  for (var i = 0; i < dados.length; i++) {   try {    $('#tabelaTaxas > tbody:last-child').append('<tr id="resultadoBuscaServico' + i + '"><td style="width: 90px;text-align: right;"><div class="form-check"><label class="form-check-label"><input id="checkboxLinhaResultado' + i + '" onclick="enviarTabelaTaxas(' + i + ',' + "'" + dados[i] + "'" + ', 1, 1);" class="form-check-input" type="checkbox" value=""><span class="form-check-sign"><span class="check"></span></span></label></div></td><td id="nomeResultado' + i + '">' + dados[i] + '</td></tr>');   } catch (e) {}  } }  function getIdLinhaTaxa(id) {  try {   var encontrar = id.match(/excluirLinhaTaxa/g);   if (encontrar != null) {    return id.replace("excluirLinhaTaxa", "");   } else {    return id;   }  } catch (e) {} }  function getNomeServicoResultado(id) {  try {   var encontrar = id.match(/checkboxResultado/g);   if (encontrar != null) {    return id.replace("checkboxResultado", "nomeResultado");   } else {    return id;   }  } catch (e) {} }  function getIdServicoResultado(id) {  try {   var encontrar = id.match(/checkboxResultado/g);   if (encontrar != null) {    return id.replace("checkboxResultado", "");   } else {    return id;   }  } catch (e) {} }  function buscarServico(palavra) {  if (palavra == "") {   return;  }  var resultados = "";  var quantidadeResultados = 0;  var maximoResultados = 20;  for (var i = 0; i < dados.length; i++) {   if (dados[i].toLowerCase().search(palavra.toLowerCase()) >= 0) {    if (quantidadeResultados == maximoResultados) {     break;    } else {     quantidadeResultados = quantidadeResultados + 1;     resultados = resultados + "" + i + ",";    }   } else {}  }  return resultados; }  function exibeResultadosPesquisa(resultado) {  try {   if (resultado == "") {    exibeNenhumResultado();    return;   }   resultado = resultado.split(",");   escondeNenhumResultado();   escondeTodosResultados();   $("#tabelaResultado").show();   for (var i = 0; i < resultado.length; i++) {    $("#resultadoBuscaServico" + resultado[i]).show();   }  } catch (e) {   exibeNenhumResultado();  } }  function escondeTodosResultados() {  var totalServicos = dados.length;  $("#tabelaResultado").hide();  try {   for (var i = 0; i < totalServicos; i++) {    $("#resultadoBuscaServico" + i).hide();   }  } catch (e) {} }  function exibeNenhumResultado() {  escondeTodosResultados();  $("#tabelaNenhumResultado").show(); }  function escondeNenhumResultado() {  $("#tabelaNenhumResultado").hide(); } </script>
+                    <script>
+                    verificaPaisMulticlasse();
+                    function verificaPaisMulticlasse(){
+                     var valor = $("#dropdownPaisesAgentes").val();
+                     if(valor == "Uruguai" ||valor == "África" ||valor == "Rússia" ||valor == "Hong" ||valor == "União" ||valor == "Singapura" ||valor == "Japão" ||valor == "Filipinas" ||valor == "Reino" ||valor == "China"){
+                     $("#lembretePaisMulticlasse").show();
+                     }
+                     else if(valor == "Chile"){
+                     $("#lembretePaisMulticlasse").show();
+                     $("#lembretePaisMulticlasseSM").show();
+                     }else{
+                     $("#lembretePaisMulticlasse").hide();
+                     $("#lembretePaisMulticlasseSM").hide();
+                     }
+                     }
+                    </script>
+
+</body>
+</html>

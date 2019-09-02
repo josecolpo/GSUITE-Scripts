@@ -1,0 +1,23 @@
+    <footer class="footer">
+        <div class="container">
+            <nav class="float-left">
+                <ul>
+                    <li>
+                        <a href="https://sites.google.com/pap.com.br/intranet/" target="_blank">Intranet</a>
+                    </li>
+                    <li>
+                        <a href="https://sites.google.com/pap.com.br/intranet/" target="_blank">Endereço</a>
+                    </li>
+                    <li>
+                        <a href="https://sites.google.com/pap.com.br/intranet/" target="_blank">Ajuda</a>
+                    </li>
+                </ul>
+            </nav>
+            <a href="https://pap.com.br" target="_blank" style="color: #555;">
+            <div class="copyright float-right">
+                Paulo Afonso Pereira
+            </div>
+            </a>
+        </div>
+    </footer>
+

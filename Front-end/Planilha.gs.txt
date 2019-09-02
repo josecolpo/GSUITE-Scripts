@@ -1,0 +1,21 @@
+function planilhaIniciar(id, nomePagina){
+  try{
+    var planilha = SpreadsheetApp.openByUrl(id);
+    var resultado = planilha.getSheetByName(nomePagina);
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function planilhaLer(planilha, intervaloColuna){
+  try{
+    var resultado = new Array();
+    for(var i=0; i<intervaloColuna.length; i++){
+      resultado.push(planilha.getRange(intervaloColuna[i]).getValues());
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}

@@ -1,0 +1,77 @@
+<nav class="navbar fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+    <div class="container">
+      <div class="navbar-translate">
+        <a href="https://pap.com.br" target="_blank" class="navbar-brand">
+			<img style="width: 200px;margin-top: -7px;" src="https://drive.google.com/uc?export=view&amp;id=1-RUx4nLQVu1A92-BDhlaLZZ0U1vdpNpl">
+		</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span style="background-color:#eeeeee;" class="sr-only">Toggle navigation</span>
+          <span style="background-color:#eeeeee;" class="navbar-toggler-icon"></span>
+          <span style="background-color:#eeeeee;" class="navbar-toggler-icon"></span>
+          <span style="background-color:#eeeeee;" class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="dropdown nav-item">
+            <a style="color: #eeeeee;" href="https://sites.google.com/pap.com.br/intranet/home?authuser=0" class="nav-link">
+              <i class="material-icons">web</i>intranet<div class="ripple-container"></div><div class="ripple-container"></div><div class="ripple-container"></div>
+			</a>            
+          </li>
+          <li class="dropdown nav-item">
+            <a style="color: #eeeeee;" href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+              <i class="material-icons">table_chart</i>Planilhas<div class="ripple-container"></div><div class="ripple-container"></div><div class="ripple-container"></div><div class="ripple-container"></div></a>
+            <div style="background-color: #757575!important;" class="dropdown-menu dropdown-with-icons">
+              <a style="color:#eeeeee;" href="https://docs.google.com/spreadsheets/d/1TBfZ_y3cfalZ0PecX6ykme1nuzNX6hj0Kba6BD1XJ9w/edit?usp=sharing" target="_blank" class="dropdown-item">
+                Despesa</a>
+              <a style="color:#eeeeee;" href="https://docs.google.com/spreadsheets/d/15tGYeoFbunx7KR4N2xBefcyi3QY9TFybutne86eAUfs/edit?usp=sharing" target="_blank" class="dropdown-item">
+                Pagamento</a>
+              <a style="color:#eeeeee;" href="https://drive.google.com/open?id=1TRhHKURP3ixjmNEHYnLMHCRN8m3wYzF42t3Vx1xR2ug" target="_blank" class="dropdown-item">
+                Proposta</a>
+              <a style="color:#eeeeee;" href="https://docs.google.com/spreadsheets/d/1eS1-kBz4N25cB3cP_yPSh4_BNICVYxbJd_6eJqQ9gIo/edit?usp=sharing" target="_blank" class="dropdown-item">
+                Orçamento</a>
+            </div>
+          </li>
+          <li class="dropdown nav-item">
+            <a style="color: #eeeeee;" href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+              <i class="material-icons">apps</i>Formulários<div class="ripple-container"></div><div class="ripple-container"></div><div class="ripple-container"></div><div class="ripple-container"></div></a>
+            <div style="background-color: #757575!important;" class="dropdown-menu dropdown-with-icons">
+              <a style="color: #eeeeee;" onclick="menuRedirecionar(0)" class="dropdown-item">
+                Todos</a>
+              <a style="color: #eeeeee;" onclick="menuRedirecionar(1)" class="dropdown-item">
+                Despesa</a>
+              <a style="color: #eeeeee;" onclick="menuRedirecionar(2)" class="dropdown-item">
+                Pagamento</a>
+              <a style="color: #eeeeee;" onclick="menuRedirecionar(3)" class="dropdown-item">
+                Proposta</a>
+              <a style="color: #eeeeee;" onclick="menuRedirecionar(4)" class="dropdown-item">
+                Orçamento</a>
+            </div>
+          </li>
+          <li class="button-container nav-item iframe-extern">
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <script>
+  function menuRedirecionar(opcao){
+  if(opcao == 0){
+  window.top.location.href = 'https://pap.com.br/formulario/principal';
+  }else if(opcao == 1){
+  window.top.location.href = 'https://pap.com.br/formulario/reembolso';
+  }else if(opcao == 2){
+  window.top.location.href = 'https://pap.com.br/formulario/pagamento';
+  }else if(opcao == 3){
+  window.top.location.href = 'https://pap.com.br/formulario/proposta';
+  }else if(opcao == 4){
+  window.top.location.href = 'https://pap.com.br/formulario/orcamento';
+  }else{
+  window.top.location.href = 'https://pap.com.br/formulario/principal';
+  }
+  }
+  </script>
+  
+
+

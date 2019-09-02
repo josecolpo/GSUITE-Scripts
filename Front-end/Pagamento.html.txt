@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="TI PAP">
+    <meta name="author" content="TI PAP">
+    <title>PAP - Formulário Pagamento</title>
+    <link rel="icon" href="https://drive.google.com/uc?export=view&id=1Ue1C8Yjie5fm2Y8levzdrx7Zd8P35M2q">
+    <!-- inicio css -->
+    <?!= httpIncluirArquivo('Css'); ?>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+	<!-- final css -->
+    <style>.dropdown-item:hover{color:white!important}.bootstrap-datetimepicker-widget table td.today>div:before{display:none!important;}</style>
+</head>
+
+<body>
+
+<?!= httpIncluirArquivo('Menu'); ?>
+
+	<!-- inicio formulario -->	
+	<div class="container">
+	<div class="col-md-8 ml-auto mr-auto" style="padding-top: 80px;">
+	<div class="card container">
+    <div style="margin-top: 30px;" class="col-md-12">
+			<div>
+				<h2 style="text-align: left;"><strong>Pagamento</strong></h2>
+			</div>
+		</div>
+		
+		<form target="dummyframe" onsubmit="enviarFormulario();" id="uploadForm" action="https://script.google.com/macros/s/AKfycbxyr_cNW6i4vxD-Ei2u-SVjGcPYuyTMio3tZso_zsv2rJQMT3Qf/exec" method="POST">
+        
+		<div class="col-md-12">
+			<div>
+				<h3 style="text-align: left;"><small>Preencha os campos abaixo</small></h3>
+			</div>
+		</div>
+        
+        <div class="col-md-12"> 
+		<div class="title">
+		<h4>Responsável</h4>
+		</div>
+		</div>
+        
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group bmd-form-group">
+		<label for="exampleInput1" class="bmd-label-floating">Nome</label>
+		<input name="nomeResp" type="text" class="form-control" id="exampleInput1" required>
+		<span class="bmd-help">Nome do responsável pelo produto</span>
+		</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group bmd-form-group">
+		<label for="exampleInput1" class="bmd-label-floating">CPF</label>
+		<input name="cpfResp" type="number" class="form-control" id="exampleInput1">
+		<span class="bmd-help">Número CPF do Responsável</span>
+		</div>
+		</div>
+		
+		<div class="col-md-12"> 
+		<div class="title">
+		<h4>Produto</h4>
+		</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group bmd-form-group">
+		<label for="exampleInput1" class="bmd-label-floating">Produto</label>
+		<input name="nomeProduto" type="text" class="form-control" id="exampleInput1" required>
+		<span class="bmd-help">Nome do produto comprado</span>
+		</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group label-floating bmd-form-group">
+		<label class="form-control-label bmd-label-floating" for="exampleInputTextarea">Justificativa pela compra</label>
+		<textarea name="justificativa" class="form-control" rows="5" id="exampleInputTextarea"></textarea>
+		</div>
+		</div>
+		
+		<div class="col-md-12"> 
+			<div class="title">
+				<h4>Pagamento</h4>
+			</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group bmd-form-group">
+		<label for="exampleInput1" class="bmd-label-floating">Valor</label>
+		<input name="valor" type="number" class="form-control" id="exampleInput1" required>
+		<span class="bmd-help">Valor gasto no produto</span>
+		</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="row">
+		
+		<div class="col">
+		<div class="form-group bmd-form-group">
+		<div class="btn-group bootstrap-select">
+		<select name="metodoCompra" class="selectpicker" data-style="select-with-transition" title="Single Select" data-size="7" tabindex="-98" required>
+		<option class="bs-title-option" value="">Método</option>
+			<option value="2">À vista</option>	
+			<option value="3">Boleto</option>
+			<option value="4">Cartão Crédito - Bradesco - ELO - PA - 6509 0100 0101 4861</option>
+			<option value="5">Cartão Crédito - Bradesco - ELO - PAP - 6509 0100 0151 4860</option>
+            <option value="6">Cartão Crédito - Nu Bank - Master - PA 5234 2180 5953 0274</option>
+			<option value="7">Cartão Débito - Itaú - Mastercard - PA - 5899 1620 8180 0352</option>
+			<option value="8">Cartão Débito - Bradesco - Visa - PA - 4551 8505 0921 1226</option>
+			<option value="9">Cartão Débito - Sicredi - Visa - PAP - 4960 4614 3509 0117</option>
+			<option value="10">Tranferência Bancária</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		
+		<div class="col">
+		<div class="form-group bmd-form-group">
+		<div class="btn-group bootstrap-select">
+		<select name="numParcelas" class="selectpicker" data-style="select-with-transition" title="Single Select" data-size="7" tabindex="-98">
+		<option class="bs-title-option" value="">Parcelas</option>
+			<option value="2">1x</option>	
+			<option value="3">2x</option>
+			<option value="4">3x</option>
+			<option value="5">4x</option>
+			<option value="6">5x</option>
+			<option value="7">6x</option>
+			<option value="8">7x</option>
+			<option value="9">8x</option>
+			<option value="10">9x</option>
+			<option value="11">10x</option>
+			<option value="12">11x</option>
+			<option value="13">12x</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		
+		</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group bmd-form-group">
+			  <div class="form-group bmd-form-group">
+				<input name="dataCompra" id="data" type="text" placeholder="Data da compra" class="form-control datepicker" value="" required>
+                <span class="bmd-help">Data da compra</span>
+			  </div>
+		</div>
+		</div>
+		
+				
+		<div class="col-md-11 ml-auto mr-auto">
+		<div class="form-group bmd-form-group">
+		<label for="exampleInput1" class="bmd-label-floating">Local</label>
+		<input name="localCompra" type="text" class="form-control" id="exampleInput1">
+		<span class="bmd-help">Endereço do local onde o produto foi comprado</span>
+		</div>
+		</div>
+		
+		<div class="col-md-12"> 
+			<div class="title">
+				<h4>Anexo</h4>
+			</div>
+		</div>
+		
+		<!-- inputs escondidos para guardar os dados do arquivo -->
+        <input type="hidden" value="" name="anexoComprovante" id="anexoComprovante">
+        <input type="hidden" value="" name="nomeAnexoComprovante" id="nomeAnexoComprovante">
+		
+		<div class="col-md-11 ml-auto mr-auto"> 
+			<div class="form-group form-file-upload form-file-multiple bmd-form-group">
+                <input id="attachAnexo" type="file" multiple="" class="inputFileHidden" accept="image/png, image/jpeg, application/pdf">
+                <div class="input-group">
+                  <input id="attachAnexo2" type="text" class="form-control inputFileVisible" placeholder="PDF ou Imagem do Comprovante">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-link btn-fab btn-primary">
+                      <i class="material-icons">attach_file</i>
+                    </button>
+                  </span>
+                </div>
+			</div>
+		</div>
+        
+        <!-- script necessario para enviar os arquivos pelo formulario -->
+        <script>
+        function anexarComprovante(){
+        }
+        </script>
+        <!-- final script para enviar os arquivos pelo formulario -->
+		
+		<div class="col-md-12"> 
+		<div class="title">
+		<h4>Gravação de Voz</h4>
+		</div>
+		</div>
+		
+		<div class="col-md-11 ml-auto mr-auto"> 
+		<div class="form-group bmd-form-group">
+		
+		<div class="row">
+        
+        <!-- inputs escondidos para guardar os dados do microfone -->
+        <input type="hidden" value="" name="gravacaoVoz" id="gravacaoVoz">
+        <input type="hidden" value="" name="nomeGravacaoVoz" id="nomeGravacaoVoz">
+		
+		<div class="col">
+		<!--animated pulse infinite background: linear-gradient(to top right, #00c853 0%, #00e676 100%);  -->
+			<div onclick="iniciarGravacao();" id="gravar" style="float: right; width:70px; height:70px;cursor: pointer;border-radius: 40px;text-align: center;border-width: 0px;box-shadow: -5px 5px 30px -1px rgba(3,32,20,.5);">
+				<img style="margin-top: 15px; width: 40px;height: 40px; margin-left: 0px" src="https://drive.google.com/uc?export=view&id=1M1PHAf4BFVV6MouGTFi2i4rR0qUkVxAR" />
+			</div>
+		</div>
+		
+		<div class="col">
+		<!-- animated bounceIn background: linear-gradient(to top right, #f44336 0%, #ef5350 100%);  -->
+			<div onclick="pararGravacao();" id="parar" style="float: left; width:70px; height:70px;cursor: pointer;border-radius: 40px;text-align: center;border-width: 0px;box-shadow: -5px 5px 30px -1px rgba(3,32,20,.5);">
+				<img style="width: 40px;height: 40px;margin-top: 15px; margin-left: 0px;" src="https://drive.google.com/uc?export=view&id=1WZAGjS2NfLxITNZ7Qg9LsfF8OnQhRalG" />
+			</div>
+		</div>
+        
+        <div class="col-md-12"> 
+			<div style="text-align:center" class="form-group bmd-form-group">
+				<audio id="recordedAudio" src="" controls></audio>
+			</div>
+		</div>
+		
+		<!-- script realizar gravacao -->
+		<script>        
+        navigator.mediaDevices.getUserMedia({audio:true})
+        .then(stream => {handlerFunction(stream)})
+
+            function handlerFunction(stream){
+            rec = new MediaRecorder(stream);
+            rec.ondataavailable = e => {
+              audioChunks.push(e.data);
+              if (rec.state == "inactive"){
+                var blob = new Blob(audioChunks, {type: "audio/mp3"});
+                recordedAudio.src = URL.createObjectURL(blob);
+                recordedAudio.autoplay=true;
+                enviarSom(blob); //envia o som
+              }
+              }
+            }
+            
+            function enviarSom(data){
+            var reader = new FileReader();
+            reader.onload = function(){
+            document.getElementById('gravacaoVoz').value = reader.result;
+            document.getElementById('nomeGravacaoVoz').value = "audio";
+            }
+		
+        reader.readAsDataURL(data);
+        }
+
+        gravar.onclick = e => {
+        configurarEstiloIniciarGravacao();
+        audioChunks = [];
+          rec.start();
+        }
+        parar.onclick = e => {
+        configurarEstiloPararGravacao();
+          rec.stop();
+        }
+		
+		function configurarEstiloIniciarGravacao(){
+			document.getElementById("gravar").setAttribute("style", "background: linear-gradient(to top right, #00c853 0%, #00e676 100%);float: right; width:70px; height:70px;cursor: pointer;border-radius: 40px;text-align: center;border-width: 0px;box-shadow: -5px 5px 30px -1px rgba(3,32,20,.5);");
+			document.getElementById("gravar").setAttribute("class","animated pulse infinite");
+			document.getElementById("parar").setAttribute("style", "background: linear-gradient(to top right, #f44336 0%, #ef5350 100%);float: left; width:70px; height:70px;cursor: pointer;border-radius: 40px;text-align: center;border-width: 0px;box-shadow: -5px 5px 30px -1px rgba(3,32,20,.5);");
+			document.getElementById("parar").setAttribute("class","animated bounceIn");		
+		}
+		
+		function configurarEstiloPararGravacao(){
+			document.getElementById("gravar").setAttribute("style", "float: right; width:70px; height:70px;cursor: pointer;border-radius: 40px;text-align: center;border-width: 0px;box-shadow: -5px 5px 30px -1px rgba(3,32,20,.5);");
+			document.getElementById("gravar").setAttribute("class","");
+			document.getElementById("parar").setAttribute("style", "float: left; width:70px; height:70px;cursor: pointer;border-radius: 40px;text-align: center;border-width: 0px;box-shadow: -5px 5px 30px -1px rgba(3,32,20,.5);");
+			document.getElementById("parar").setAttribute("class","animated bounceIn");		
+		}
+		</script>
+		<!-- final script realizar gravacao -->
+		
+		</div>
+		</div>
+		</div>
+		
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div style="text-align:right" class="form-group bmd-form-group">
+							<button style="background-color:#ffb74d; color:#fafafa; min-width: 122.2px;min-height: 41px;" class="btn">
+								<i id="botaoEnviarIcone" class="material-icons">done</i>
+								<a id="botaoEnviarTexto"><strong>Enviar</strong></a>
+								<img id="botaoEnviarLoading" style="display:none" src="https://drive.google.com/uc?export=view&id=1nK3xFMJrC73oj_QKhLQrp-IRgtjhyvBx">
+								<div class="ripple-container"></div>
+							</button>
+                        </div>
+                    </div>
+        
+        </form>
+
+<!-- anexa todos os arquivos antes de confirmar o formulario -->
+		<script>
+		function enviarFormulario(){
+		//anexa todos os arquivos 
+        var reader = new FileReader();
+        var file = document.getElementById('attachAnexo').files[0];
+        reader.onload = function(){
+            document.getElementById('anexoComprovante').value = reader.result;
+            document.getElementById('nomeAnexoComprovante').value = file.name;
+			//confirma o formulario
+			document.getElementById('uploadForm').submit();
+            }
+		
+        //caso nao houver nenhum arquivo a ser anexado, apenas envia o formulario
+        if(file != null){ reader.readAsDataURL(file); }
+        limparFormulario();
+        document.getElementById('uploadForm').submit();
+		}
+        
+        function limparFormulario(){
+        //esconde formulario
+        document.getElementById("uploadForm").setAttribute("style","display:none;");
+        //mostra mensagem de confirmacao
+        document.getElementById("mensagemDeConfirmacao").setAttribute("style","display:contents;");
+        
+        }
+		</script>
+<!-- final anexa todos os arquivos antes de confirmar o formulario -->
+
+<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="width:0;height:0;border:0; border:none;"></iframe>
+
+<div class="container" id="mensagemDeConfirmacao" style="display:none">
+		<div class="col-md-12">
+			<div>
+				<h3 style="text-align: left;"><small>Obrigado por utilizar o formulário</small></h3>
+                <h4 style="text-align: left;"><small><a onclick="atualizarPagina();" style="cursor:pointer; color:black;">Clique aqui para refazer</a></small></h4>
+			</div>
+		</div>
+</div>
+        
+        <script>
+        function atualizarPagina(){
+        window.open('', '_top');
+        }
+        </script>
+
+		<br />
+		
+		</div>
+		</div>
+		</div>
+		
+<?!= httpIncluirArquivo('Rodapé'); ?>
+		
+	<!-- final formulario -->
+
+    <!-- inicio js -->
+    <?!= httpIncluirArquivo('Js'); ?>	
+	<!-- iniciar data picker -->
+	<script>
+    $(document).ready(function() {
+      materialKit.initFormExtendedDatetimepickers();
+      materialKit.initSliders();
+    });
+	</script>
+	
+	<!-- final js -->
+	
+</body>
+
+</html>

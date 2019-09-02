@@ -1,0 +1,38 @@
+function httpModelo(nomeDoModelo){
+  try{
+    var resultado = HtmlService.createTemplateFromFile(nomeDoModelo);
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function httpInserir(modelo, dados){
+  try{
+    modelo.dados = new Array();
+    for(var i=0; i<dados.length; i++){
+      modelo.dados.push(dados[i]);
+    }
+    var resultado = modelo;
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function httpConfigurar(modelo, titulo){
+  try{
+    modelo = modelo.evaluate();
+    modelo = modelo.setTitle(titulo);
+    modelo = modelo.setFaviconUrl("https://drive.google.com/uc?export=view&id=1Ue1C8Yjie5fm2Y8levzdrx7Zd8P35M2q#.ico");
+    modelo = modelo.addMetaTag("viewport", "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no");
+    modelo = modelo.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    return modelo;
+  }catch(e){
+    return false;
+  }
+}
+
+function httpIncluirArquivo(nomeArquivo){
+  return HtmlService.createHtmlOutputFromFile(nomeArquivo).getContent();
+}

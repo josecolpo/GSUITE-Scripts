@@ -1,0 +1,21 @@
+//https://script.google.com/a/pap.com.br/macros/s/AKfycbyvlI_np_C_W_OOTNgdShZQhNfdv7IsK83_98SkTv0B/dev?formulario=orcamento
+function doGet(e) {
+  try{
+    var parametro = e.parameter.formulario;
+    if(parametro == "orcamento"){
+      return httpConfigurar(httpInserir(httpModelo("Orçamento"), planilhaLer(planilhaIniciar("https://docs.google.com/spreadsheets/d/115xBGp1gKe1Atg0QhhlO_1XAcT2a03T3M_FvfdskPgg/edit#gid=0", "Principal"), ["E:E"])), "Formulário Orçamento");
+    }else if(parametro == "proposta"){
+      return httpConfigurar(httpInserir(httpModelo("Proposta"), planilhaLer(planilhaIniciar("https://docs.google.com/spreadsheets/d/1LqWmP9lLMysXmQsSISzMHJ23Wy2wsTSpj7LiseM_U00/edit#gid=0", "Principal"), ["B:B", "A:A"])), "Formulário Proposta");
+    }else if(parametro == "reembolso"){
+      return httpConfigurar(httpInserir(httpModelo("Despesa e Reembolso"), planilhaLer(planilhaIniciar("https://docs.google.com/spreadsheets/d/1LqWmP9lLMysXmQsSISzMHJ23Wy2wsTSpj7LiseM_U00/edit#gid=0", "Principal"), ["B:B", "A:A"])), "Formulário Despesa e Reembolso");
+    }else if(parametro == "principal"){
+      return httpConfigurar(httpModelo("Principal"), "Principal");
+    }else if(parametro == "pagamento"){
+      return httpConfigurar(httpModelo("Pagamento"), "Pagamento");
+    }else{
+      return ContentService.createTextOutput("Desculpe, página não encontrada.");
+    }
+  }catch(e){
+    return ContentService.createTextOutput("Desculpe, página não encontrada.");
+  }
+}
