@@ -1,0 +1,36 @@
+function propostaMain(e){
+  try{
+    var data = e.parameter.data_atual;
+    var consultor = e.parameter.consultor;
+    var modelo = e.parameter.modelo_escolha;
+    var modelo_idioma = e.parameter.modelo_idioma;
+    var proposta_descricao = e.parameter.proposta_descricao;
+    var cliente_novo = e.parameter.cliente_novo;
+    var cliente_nome = e.parameter.cliente_nome;
+    var servicos_descricoes = JSON.parse(e.parameter.servicosDescricoes).data;
+    var servicos_quantidades = JSON.parse(e.parameter.servicosQuantidades).data;
+    var servicos_honorario = JSON.parse(e.parameter.servicosHonorario).data;
+    var servicos_taxas = JSON.parse(e.parameter.servicosTaxas).data;
+    var servicos_totais = JSON.parse(e.parameter.servicosTotais).data;
+    var copiaDocumento = documentoCopia("1BEWIGcn1xM71sp9fpBHCj4zcId1LwM0w19tp-X1OFXg", consultor + " - " + cliente_nome);
+    
+    documentoSubstituirTexto(copiaDocumento[1], ["<<Data:>>","<<Cliente:>>","<<Descrição da Proposta:>>","<<Consultor:>>"], [data,cliente_nome,proposta_descricao,consultor]);
+    documentoInserirTabela(copiaDocumento[1], propostaJuntarDadosTabela(servicos_descricoes, servicos_quantidades, servicos_honorario, servicos_taxas, servicos_totais));
+  
+    return ContentService.createTextOutput(JSON.stringify({"data" : copiaDocumento[0]})).setMimeType(ContentService.MimeType.JSON);
+  }catch(e){
+	return ContentService.createTextOutput(JSON.stringify({"result" : "error"})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function propostaJuntarDadosTabela(servicos_descricoes, servicos_quantidades, servicos_honorario, servicos_taxas, servicos_totais){
+  try{
+    var resultado = new Array();
+    for(var i= 0; i<servicos_descricoes.length; i++){
+      resultado.push([servicos_descricoes[i], servicos_quantidades[i], servicos_honorario[i], servicos_taxas[i], servicos_totais[i]]);
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}

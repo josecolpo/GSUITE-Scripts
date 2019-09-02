@@ -1,0 +1,15 @@
+function doPost(e){
+  try{
+    var parametro = e.parameter.formulario;
+    
+    if(parametro == "orcamento"){
+      return orcamentoMain(e);
+    }else if(parametro == "proposta"){
+      return propostaMain(e);
+    }else{
+      return ContentService.createTextOutput(JSON.stringify({"result" : "error"})).setMimeType(ContentService.MimeType.JSON);
+    }
+  }catch(e){
+    return ContentService.createTextOutput(JSON.stringify({"result" : "error"})).setMimeType(ContentService.MimeType.JSON);
+  }
+}

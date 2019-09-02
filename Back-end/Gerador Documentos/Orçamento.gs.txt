@@ -1,0 +1,40 @@
+function orcamentoMain(e){
+  try{          
+	var consultor = e.parameter.consultor;
+	var modelo = e.parameter.modelo;
+	var servicosNomes = JSON.parse(e.parameter.servicosNomes).data;
+    var servicosClasses = JSON.parse(e.parameter.servicosClasses).data;
+    var servicosQuantidades = JSON.parse(e.parameter.servicosQuantidades).data;
+    var servicoPais = e.parameter.servicoPais;
+	var agente = e.parameter.agente;
+	var prazo = e.parameter.prazo;
+    var data = e.parameter.data;
+    
+    var copiaDocumento;
+    
+    if(modelo == "ING"){
+      copiaDocumento = documentoCopia("1KrkvBZbICQ4ioYjCwVmx4BVlCIR4GqEkpml2bb_LS_U", consultor + " - " + agente);
+    }else{
+      copiaDocumento = documentoCopia("1Ty5HkKQ4EWyWSVHG4pBL5qGxygWHZa6Obx6WIajtRpo", consultor + " - " + agente);
+    }
+    
+    documentoSubstituirTexto(copiaDocumento[1], ["<<PrazoResposta:>>","<<Data:>>","<<Agente:>>","<<Consultor:>>"], [prazo,data,agente,consultor]);
+    documentoInserirTabela(copiaDocumento[1], orcamentoJuntarDadosTabela(servicosQuantidades, servicosNomes, servicosClasses, servicoPais));
+  
+    return ContentService.createTextOutput(JSON.stringify({"data" : copiaDocumento[0]})).setMimeType(ContentService.MimeType.JSON);
+  }catch(e){
+	return ContentService.createTextOutput(JSON.stringify({"result" : "error"})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function orcamentoJuntarDadosTabela(servicosQuantidades, servicosNomes, servicosClasses, servicosPais){
+  try{
+    var resultado = new Array();
+    for(var i= 0; i<servicosNomes.length; i++){
+      resultado.push([servicosQuantidades[i], servicosNomes[i], servicosClasses[i], servicosPais]);
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}

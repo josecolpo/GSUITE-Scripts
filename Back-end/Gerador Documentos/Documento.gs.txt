@@ -1,0 +1,37 @@
+function documentoCopia(id, titulo){
+  try{
+    var arquivo = DriveApp.getFileById(id);
+    var arquivoNovo = arquivo.makeCopy();
+    arquivoNovo.setName(titulo);
+    var arquivoNovoId = arquivoNovo.getId();
+    var documentoNovo = DocumentApp.openById(arquivoNovoId);
+    var documentoNovoCorpo = documentoNovo.getBody();
+    return [arquivoNovoId, documentoNovoCorpo];
+  }catch(e){
+    return false;
+  }
+}
+
+function documentoSubstituirTexto(corpo, texto, valor){
+  try{
+    for(var i=0; i<texto.length; i++){
+      corpo.replaceText(texto[i], valor[i]);
+    }
+  }catch(e){
+    return false;
+  }
+}
+
+function documentoInserirTabela(documentoCorpo, dados){
+  try{
+    var tabela = documentoCorpo.getTables();
+    for(var i= 0; i<dados.length; i++){
+      var linha = tabela[0].appendTableRow(); 
+      for(var j=0; j<dados[i].length; j++){
+        linha.appendTableCell(dados[i][j]);
+      }
+    }
+  }catch(e){
+    return false;
+  }
+}
