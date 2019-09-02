@@ -1,0 +1,173 @@
+function propostaMain(e){
+  try{ 
+    var consultor_email = e.parameter.consultor_email;
+    var consultor_nome = e.parameter.consultor_nome;
+    var modelo = e.parameter.modelo_escolha;
+    var modelo_idioma = e.parameter.modelo_idioma;
+    var proposta_descricao = e.parameter.proposta_descricao;
+    var cliente_novo = e.parameter.cliente_novo;
+    var cliente_nome = e.parameter.cliente_nome;
+    var cliente_email = e.parameter.cliente_email;
+    var cliente_email_corpo = e.parameter.cliente_email_corpo;
+    var servicos_descricoes = JSON.parse(e.parameter.servicosDescricoes).data;
+    var servicos_quantidades = JSON.parse(e.parameter.servicosQuantidades).data;
+    var servicos_honorario = JSON.parse(e.parameter.servicosHonorario).data;
+    var servicos_taxas = JSON.parse(e.parameter.servicosTaxas).data;
+    var servicos_totais = JSON.parse(e.parameter.servicosTotais).data;
+    var pagamento_opcao = e.parameter.pagamento_opcao;
+    var pagamento_valor = e.parameter.pagamento_valor;
+    var pagamento_metodo = e.parameter.pagamento_metodo;
+    var pagamento_parcela = e.parameter.pagamento_parcela;
+    
+    if(pagamento_opcao != 1){
+      var novos_valores_pagamento = propostaPagamentoGratuito(servicos_descricoes.length);
+      servicos_honorario = novos_valores_pagamento[0];
+      servicos_taxas = novos_valores_pagamento[0];
+      servicos_totais = novos_valores_pagamento[0];
+      pagamento_valor = novos_valores_pagamento[1];
+      pagamento_metodo = novos_valores_pagamento[1];
+      pagamento_parcela = novos_valores_pagamento[1];
+    }
+    
+    var documento_id = propostaGerarDocumento(dataFormatoBr(new Date()),consultor_nome,modelo,modelo_idioma,proposta_descricao,cliente_novo,cliente_nome,servicos_descricoes,servicos_quantidades,servicos_honorario,servicos_taxas,servicos_totais);
+    propostaEnviarEmail([documento_id],["Proposta para "+cliente_nome+".pdf"],[cliente_email],"PAP - Proposta Comercial",cliente_email_corpo,consultor_email);
+    propostaEnviarParaPlanilha(consultor_nome ,modelo ,modelo_idioma ,proposta_descricao ,cliente_novo ,cliente_nome ,cliente_email ,cliente_email_corpo ,servicos_descricoes ,servicos_quantidades ,servicos_honorario ,servicos_taxas ,servicos_totais ,pagamento_opcao ,pagamento_valor ,pagamento_metodo ,pagamento_parcela);
+  }catch(e){
+    return false;
+  }
+}
+
+function propostaEnviarParaPlanilha(consultor_nome,modelo,modelo_idioma,proposta_descricao,cliente_novo,cliente_nome,cliente_email,cliente_email_corpo,servicos_descricoes,servicos_quantidades,servicos_honorario,servicos_taxas,servicos_totais,pagamento_opcao,pagamento_valor,pagamento_metodo,pagamento_parcela){
+  try{
+    var linhas = new Array();
+    var linhasPlanilhaControle = new Array();
+    var juncaoServicos = "";
+    var juncaoPagamento = "Valor: " + pagamento_valor + "  Método: " + pagamento_metodo + "  Parcelas: " + pagamento_parcela;
+    var juncaoDescricao = "Modelo: " + modelo + "  Idioma: " + modelo_idioma + "  Descrição: " + proposta_descricao;
+    var planilhaGeral = planilhaIniciar(["https://docs.google.com/spreadsheets/d/1TRhHKURP3ixjmNEHYnLMHCRN8m3wYzF42t3Vx1xR2ug/edit#gid=0"],["Histórico"])[0];
+    var planilhaGeralControle = planilhaIniciar(["https://docs.google.com/spreadsheets/d/1TRhHKURP3ixjmNEHYnLMHCRN8m3wYzF42t3Vx1xR2ug/edit#gid=823081253"],["Controle"])[0];
+    var planilhaConsultor = planilhaIniciar([propostaGetPlanilhaColaborador(consultor_nome)],["Histórico"])[0];
+    var codigoHistorico = "";
+    var codigoColaborador = "";
+
+    for(var i=0; i<servicos_descricoes.length; i++){
+      juncaoServicos = juncaoServicos + "Nome: " + servicos_descricoes[i] + "  Quantidade: " + servicos_quantidades[i] + "  Honorários: " + servicos_honorario[i] + "  Taxas: " + servicos_taxas[i] + "  Total: " + servicos_totais[i] + "\n";
+    }
+    
+    linhas.push(dataFormatoBr(new Date()));
+    linhas.push(dataInserirDias(linhas[0],3));
+    linhas.push(consultor_nome);
+    linhas.push(cliente_nome);
+    linhas.push(cliente_email);
+    linhas.push("");
+    linhas.push(juncaoServicos);
+    linhas.push(juncaoPagamento);
+    linhas.push(juncaoDescricao);
+  
+    if(typeof planilhaConsultor !== "undefined"){
+      codigoColaborador = planilhaInserirDropdown(planilhaConsultor, planilhaEscrever(planilhaConsultor,linhas), "F", ['Aceita','Aguardando Orçamento','Aguardando Resposta','Enviar Proposta','Recusada']);
+      linhas[8] = "Código: "+ codigoColaborador +"  Modelo: " + modelo + "  Idioma: " + modelo_idioma + "  Descrição: " + proposta_descricao;
+    }
+    
+    codigoHistorico = planilhaInserirDropdown(planilhaGeral, planilhaEscrever(planilhaGeral, linhas), "F", ['Aceita','Aguardando Orçamento','Aguardando Resposta','Enviar Proposta','Recusada']);
+    
+    if(codigoColaborador != ""){
+      codigoHistorico = codigoColaborador;
+    }
+    
+    for(var i=0; i<servicos_descricoes.length; i++){
+      linhasPlanilhaControle.push([codigoHistorico,linhas[0],linhas[1],consultor_nome,modelo,modelo_idioma,proposta_descricao,cliente_novo,cliente_nome,cliente_email,cliente_email_corpo,servicos_descricoes[i],servicos_quantidades[i],servicos_honorario[i],servicos_taxas[i],servicos_totais[i],pagamento_opcao,pagamento_valor,pagamento_metodo,pagamento_parcela]);
+    }
+    
+    for(var i=0; i<servicos_descricoes.length; i++){
+      var codigoControle = planilhaEscrever(planilhaGeralControle, linhasPlanilhaControle[i]);
+    }
+    
+  }catch(e){
+    return false;
+  }
+}
+
+function propostaGetPlanilhaColaborador(nome){
+  try{
+    var id = "";
+    if(nome == "Alan"){
+      id = "https://docs.google.com/spreadsheets/d/1zZ2SIVOsF9vfXn8bAnPgxKSJx6qU80ETzqNRZ-tvXAM/edit#gid=0";
+    }else if(nome == "Fernanda"){
+      id = "https://docs.google.com/spreadsheets/d/12pItW7RytmW2LT132cttcgXqAi06YJFkehFtF7n6Ks4/edit#gid=0";
+    }else if(nome == "Júlio"){
+      id = "https://docs.google.com/spreadsheets/d/1KODuJeY9QEU9wpqjtB3tALWr4UtoW7BmX9qi7zSceyI/edit#gid=0";
+    }else if(nome == "Márcia"){
+      id = "https://docs.google.com/spreadsheets/d/1rclDmSe8Zp05QAzHnGcjrB1CFQ9qAMHJCwIGTcMvfuY/edit#gid=0";
+    }else if(nome == "Patrícia"){
+      id = "https://docs.google.com/spreadsheets/d/1iLviSuiyngnMSDEI1H5XnJ1lJMtNLTQ5k7GxdTNd9R0/edit#gid=0";
+    }
+    return id;
+  }catch(e){
+    return false;
+  }
+}
+
+function propostaPagamentoGratuito(quantidade){
+  try{
+    var resultado = new Array();
+    
+    resultado.push(new Array());
+    resultado.push("Gratuito");
+    
+    for(var i=0; i<=quantidade; i++){
+      resultado[0].push("Gratuito"); 
+    }
+    
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function propostaGerarDocumento(data_atual,consultor,modelo_escolha,modelo_idioma,proposta_descricao,cliente_novo,cliente_nome,servicosDescricoes,servicosQuantidades,servicosHonorario,servicosTaxas,servicosTotais){
+	try{      
+      var url = "https://script.google.com/macros/s/AKfycbytCs7rosu77A5UQVV7cg7ldH2TGJKWb3ad74oMlHYZiYCQPZb7/exec";
+      var resultado = new Array();
+      var parametros = {
+        "formulario" : "proposta",
+        "data_atual" : data_atual,
+        "consultor" : consultor,
+        "modelo_escolha" : modelo_escolha,
+        "modelo_idioma" : modelo_idioma,
+        "proposta_descricao" : proposta_descricao,
+        "cliente_novo" : cliente_novo,
+        "cliente_nome" : cliente_nome,
+        "servicosDescricoes" : JSON.stringify({"data" : servicosDescricoes}),
+        "servicosQuantidades" : JSON.stringify({"data" : servicosQuantidades}),
+        "servicosHonorario" : JSON.stringify({"data" : servicosHonorario}),
+        "servicosTaxas" : JSON.stringify({"data" : servicosTaxas}),
+        "servicosTotais" : JSON.stringify({"data" : servicosTotais})
+      };	
+      var options = {
+        "method" : "POST",  
+        "followRedirects" : true,
+        "muteHttpExceptions": true,
+        "payload" : parametros
+      };
+      var resultadoPost = UrlFetchApp.fetch(url,options);
+      
+      if (resultadoPost.getResponseCode() == 200){
+        var params = JSON.parse(resultadoPost.getContentText());
+        var id = params.data;
+        resultado.push(id);
+      }
+      
+	return resultado;
+  }catch(e){
+    return false;
+  }  
+}
+
+function propostaEnviarEmail(documento_id,documento_nome,cliente_email,email_titulo,email_corpo,consultor_email){
+  try{
+    gmailEnviar(documento_id, documento_nome, cliente_email, email_titulo, email_corpo, consultor_email, consultor_email);
+  }catch(e){
+    return false;
+  }
+}

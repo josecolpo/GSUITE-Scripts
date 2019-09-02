@@ -1,0 +1,75 @@
+function reembolsoMain(e) {
+  try{
+    var responsavel_email = e.parameter.responsavel_email;
+    var responsavel_nome = e.parameter.responsavel_nome;
+    var autorizador_nome = e.parameter.autorizador_nome;
+    var autorizador_data = e.parameter.autorizador_data;
+    var despesa_categoria = e.parameter.despesa_categoria;
+    var despesa_categoria_outra = e.parameter.despesa_categoria_outra;
+    var despesa_adiantamento = e.parameter.despesa_adiantamento;
+    var viagem_data_partida = e.parameter.viagem_data_partida;
+    var viagem_data_chegada = e.parameter.viagem_data_chegada;
+    var viagem_rota_origem = e.parameter.viagem_rota_origem;
+    var viagem_rota_destino = e.parameter.viagem_rota_destino;
+    var viagem_kms = e.parameter.viagem_kms;
+    var reembolso_para = e.parameter.reembolso_para;
+    var reembolso_descricao = e.parameter.reembolso_descricao;
+    var reembolso_custo = e.parameter.reembolso_custo;
+    var anexo_arquivo = JSON.parse(e.parameter.anexo_arquivo).data;
+    var anexo_nome = JSON.parse(e.parameter.anexo_nome).data;
+    var anexo_tipo = JSON.parse(e.parameter.anexo_tipo).data;
+    var anexo_destinatario = JSON.parse(e.parameter.anexo_destinatario).data;
+
+    var pasta = reembolsoUploadArquivos(anexo_arquivo, anexo_nome, responsavel_nome + "-" + autorizador_nome);
+    reembolsoParaEnviarPlanilha(responsavel_email,responsavel_nome,autorizador_nome,autorizador_data,despesa_categoria,despesa_categoria_outra,despesa_adiantamento,viagem_data_partida,viagem_data_chegada,viagem_rota_origem,viagem_rota_destino,viagem_kms,reembolso_para,reembolso_descricao,reembolso_custo,pasta,anexo_arquivo,anexo_nome,anexo_tipo,anexo_destinatario);
+  
+  }catch(e){
+  }
+}
+
+function reembolsoUploadArquivos(arquivos, anexo_nome, nomePasta){
+  try{
+    var pasta = driveCriarPasta("17iWpYcmwXzzTqYCsRyHXFFqsrf2ED2j9", nomePasta);
+    for(var i=0; i<arquivos.length; i++){
+      driveUploadArquivo(arquivos[i], anexo_nome[i], pasta);
+    }
+    return pasta;
+  }catch(e){
+  }
+}
+
+function reembolsoParaEnviarPlanilha(responsavel_email,responsavel_nome,autorizador_nome,autorizador_data,despesa_categoria,despesa_categoria_outra,despesa_adiantamento,viagem_data_partida,viagem_data_chegada,viagem_rota_origem,viagem_rota_destino,viagem_kms,reembolso_para,reembolso_descricao,reembolso_custo,pasta,anexo_arquivo,anexo_nome,anexo_tipo,anexo_destinatario){
+  try{
+    var codigo = 0;
+    var linhas = new Array();
+    var planilhaHistorico = planilhaIniciar(["https://docs.google.com/spreadsheets/d/1TBfZ_y3cfalZ0PecX6ykme1nuzNX6hj0Kba6BD1XJ9w/edit#gid=0"],["Histórico"])[0];
+    var planilhaControle = planilhaIniciar(["https://docs.google.com/spreadsheets/d/1TBfZ_y3cfalZ0PecX6ykme1nuzNX6hj0Kba6BD1XJ9w/edit#gid=0"],["Controle"])[0];
+    
+    reembolso_para = "Para: " + reembolso_para + " Descrição: " + reembolso_descricao;
+    
+    if(despesa_categoria_outra != ""){
+      despesa_categoria = despesa_categoria_outra;
+    } else if(despesa_categoria == "Viagem"){
+      despesa_categoria = despesa_categoria + " Data partida: " + viagem_data_partida + " Data chegada: " + viagem_data_chegada + " Rota: " + viagem_rota_origem + " Destino: " + viagem_rota_destino + " Kms: " + viagem_kms;
+    }
+    
+	linhas.push(dataFormatoBr(new Date()));
+	linhas.push(responsavel_nome);
+	linhas.push(autorizador_nome);
+	linhas.push(autorizador_data);
+	linhas.push(despesa_categoria);
+	linhas.push(despesa_adiantamento);
+	linhas.push(reembolso_para);
+	linhas.push(reembolso_custo);
+	linhas.push("https://drive.google.com/open?id="+pasta);
+    
+    codigo = planilhaEscrever(planilhaHistorico, linhas);
+    
+    for(var i=0; i<anexo_nome.length; i++){
+      planilhaEscrever(planilhaControle, [codigo,linhas[0],responsavel_email,responsavel_nome,autorizador_nome,autorizador_data,despesa_categoria,despesa_categoria_outra,despesa_adiantamento,viagem_data_partida,viagem_data_chegada,viagem_rota_origem,viagem_rota_destino,viagem_kms,reembolso_para,reembolso_descricao,reembolso_custo,anexo_nome[i],anexo_tipo[i],anexo_destinatario[i]]);
+    }
+    
+  }catch(e){
+  
+  }
+}

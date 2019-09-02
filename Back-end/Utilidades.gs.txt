@@ -1,0 +1,72 @@
+//Utilitários para Data
+function dataInserirDias(txtData,DiasAdd){ 
+  try{
+    var d = new Date();
+    d.setTime(Date.parse(txtData.split("/").reverse().join("/"))+(86400000*(DiasAdd)));
+    var DataFinal;
+    if(d.getDate() < 10) { DataFinal = "0"+d.getDate().toString(); }
+    else { DataFinal = d.getDate().toString(); }
+    if((d.getMonth()+1) < 10){ DataFinal += "/0"+(d.getMonth()+1).toString()+"/"+d.getFullYear().toString(); }
+    else { DataFinal += "/"+((d.getMonth()+1).toString())+"/"+d.getFullYear().toString(); }
+    return DataFinal;
+  }catch(e){
+    return false; 
+  }
+}
+
+function dataFormatoBr(data){
+  try{
+    if(data == ""){ return ""; }
+    else{
+    var testeDia = data.getDate();
+    var testeMes = data.getMonth();
+    var testeAno = data.getFullYear();
+    return data.getDate() + "/" + (data.getMonth() + 1) + "/" + data.getFullYear();
+    }
+  } catch(e){ return ""; }
+}
+
+function dataFormatoEng(date){
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+}
+
+function dataGetAtual(){
+  try{
+    var resultado = new Date().toLocaleString();
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+//Utilitários para verificação de dados
+function verificaDadoNulo(valor){
+  try{
+    if(valor == undefined){
+      return "";
+    }else{
+      return valor;
+    }
+  }catch(e){
+    return "";
+  }
+}
+
+//Utilitários para strings
+function stringSubstituir(str, de, para){
+    var pos = str.indexOf(de);
+    while (pos > -1){
+		str = str.replace(de, para);
+		pos = str.indexOf(de);
+	}
+    return (str);
+}

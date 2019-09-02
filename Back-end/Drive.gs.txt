@@ -1,0 +1,38 @@
+function drivePdf(ids, nomes){
+  try{
+    var resultado = new Array();
+    for(var i=0; i<ids.length; i++){
+      try{
+        var arquivo = DriveApp.getFileById(ids[i]);
+        var pdf = arquivo.getAs('application/pdf').getBytes();
+        var anexo = {fileName:nomes[i], content:pdf, mimeType:'application/pdf'};
+        resultado.push(anexo);
+      }catch(e){ }
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function driveUploadArquivo(data, nome, pasta){
+  try{
+    pasta = DriveApp.getFolderById(pasta);
+    var contentType = data.substring(5, data.indexOf(";"));
+    var bytes = Utilities.base64Decode(data.substr(data.indexOf("base64,")+7));  
+    var blob = Utilities.newBlob(bytes, contentType, nome);
+    pasta.createFile(blob);
+  }catch(e){
+    return false;
+  }
+}
+
+function driveCriarPasta(pastaRaiz, nome){
+  try{
+    pastaRaiz = DriveApp.getFolderById(pastaRaiz);
+    var novaPasta = pastaRaiz.createFolder(nome);
+    return novaPasta.getId();
+  }catch(e){
+    return false;
+  }
+}

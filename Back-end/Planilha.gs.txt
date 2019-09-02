@@ -1,0 +1,56 @@
+function planilhaIniciar(id, nomePagina){
+  try{
+    var resultado = new Array();
+    for(var i=0; i<id.length; i++){
+      for(var j=0; j<nomePagina.length; j++){
+        var planilha = SpreadsheetApp.openByUrl(id[i]);
+        var planilhaCarregada = planilha.getSheetByName(nomePagina[j]);
+        resultado.push(planilhaCarregada);
+      }
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function planilhaLer(planilha, intervaloColuna){
+  try{
+    var resultado = new Array();
+    for(var i=0; i<planilha.length; i++){
+      resultado.push(new Array());
+      for(var j=0; j<intervaloColuna.length; j++){
+        resultado[i].push(planilha[i].getRange(intervaloColuna[i]).getValues());
+      }
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function planilhaEscrever(planilha, dados){
+	try{
+      var headers = planilha.getRange(1, 1, 1, planilha.getLastColumn()).getValues()[0];
+      var nextRow = planilha.getLastRow() + 1;
+      planilha.getRange(nextRow, 1, 1, dados.length).setValues([dados]);
+      return nextRow;
+	}catch(e){
+		return false;
+    }
+}
+
+function planilhaInserirDropdown(planilha, linha, coluna, valores){
+	try{
+      var local = planilha.getRange(coluna + linha);
+      var rule = SpreadsheetApp
+      .newDataValidation()
+      .requireValueInList(valores, true)
+      .setAllowInvalid(false)
+      .build();
+      local.setDataValidation(rule);
+      return linha;
+	}catch(e){
+		return false;
+    }
+}

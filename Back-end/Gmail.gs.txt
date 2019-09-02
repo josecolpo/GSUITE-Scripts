@@ -1,0 +1,18 @@
+function gmailEnviar(anexos, anexosTitulos, emails, titulos, corpos, cc, respostas){
+  try{
+    var arquivosAnexados = drivePdf(anexos, anexosTitulos);
+	for(var i=0; i<emails.length; i++){
+      try{
+		GmailApp.sendEmail(emails[i], titulos, titulos,{
+			attachments: arquivosAnexados[i],
+			name: titulos,
+			cc: cc,
+			htmlBody: corpos,
+			replyTo: respostas
+		});
+      }catch(e){ }
+	}
+  }catch(e){
+    return false;
+  }
+}

@@ -1,0 +1,17 @@
+function doPost(e){
+  try{
+    var parametro = e.parameter.formulario;
+    
+    if(parametro == "orcamento"){
+      orcamentoMain(e);
+    }else if(parametro == "proposta"){
+      propostaMain(e);
+    }else if(parametro == "reembolso"){
+      return reembolsoMain(e);
+    }else{
+      return ContentService.createTextOutput(JSON.stringify({"result" : "error", "error" : e})).setMimeType(ContentService.MimeType.JSON);
+    }
+  }catch(e){
+    return ContentService.createTextOutput(JSON.stringify({"result" : "error", "error" : e})).setMimeType(ContentService.MimeType.JSON);
+  }
+}

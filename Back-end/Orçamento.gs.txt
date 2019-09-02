@@ -1,0 +1,192 @@
+function orcamentoMain(e){
+  try{ 
+    /*var documentosIds = orcamentoGerarDocumento(1, "Jose Colpo", 1, servicoNome, ["1","2","3"], "Brazil", agentesNomes, "today", "today"); var corpoEmail = '<body><div dir="ltr"><center><img src="https://ci5.googleusercontent.com/proxy/xMR_0VPSlRuuA4aswkdIhoGIHsBugr670zoFUCusCPRZxXhwXwvCdeZRt0oP9vSsE8E=s0-d-e1-ft#https://i.imgur.com/GHss3RV.png" alt="" width="400" height="117" class="m_-1903656408855205167gmail-m_-1253232726153350204gmail-CToWUd m_-1903656408855205167gmail-m_-1253232726153350204gmail-a6T m_-1903656408855205167gmail-CToWUd m_-1903656408855205167gmail-a6T CToWUd a6T" style="outline:0px" tabindex="0"><div class="a6S" dir="ltr" style="opacity: 0.01; left: 627px; top: 80px;"><div id=":1lr" class="T-I J-J5-Ji aQv T-I-ax7 L3 a5q" role="button" tabindex="0" aria-label="Fazer o download do anexo " data-tooltip-class="a1V" data-tooltip="Fazer o download"><div class="aSK J-J5-Ji aYr"></div></div></div><br></center><center><p align="justify" style="width:700px"><b>'+ dataFormatoEng(new Date()) +'</b></p><p align="justify" style="width:700px">&nbsp;</p><center><p align="justify" style="width:700px"><span style="font-family:helvetica">Dear Colleagues,</span><br></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><br></span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Please find attached a request for more information on your services. Due to recent issues with fee estimates, we are developing a new and easier way to communicate with you on new business opportunities; if you have any comments or questions, please let us know.</span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Thank you for your assistance with this matter.</span><br></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><br></span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Best regards,</span></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><br></span></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><b><font color="#ff9900">PAP Intellectual Property</font></b></span></p><p align="justify" style="width:700px"><span style="font-size:10pt;font-family:helvetica"><span style="font-size:10pt"><span style="color:rgb(128,128,128)"><strong>Largo Visconde do Cairú, 17, Suite 503 - Centro Histórico - Porto Alegre, RS, Brazil&nbsp;</strong></span></span></span><strong style="color:rgb(128,128,128);font-family:helvetica;font-size:13.3333px">90030-110</strong>&nbsp;<span style="font-size:10pt;font-family:helvetica"><span style="font-size:10pt"><span style="color:rgb(128,128,128)"><strong><br></strong></span><strong><span style="color:rgb(128,128,128)">Phone/Fax: +55 51 3029-5033</span>&nbsp;<br><span style="color:rgb(0,0,255)"><a style="color:rgb(34,34,34)"><span style="color:rgb(0,0,255)">global@pap.com.br</span></a>&nbsp;-&nbsp;<a style="color:rgb(34,34,34)"><span style="color:rgb(0,0,255)"><a href="https://www.pap.com.br">www.pap.com.br</a></span></a></span></strong></span></span></p></center></center></div></body>'; gmailEnviar(documentosIds, orcamentoNomePdfs(agentesNomes), agentesNomes[0], "Request for information regarding services", corpoEmail, "", ""); planilhaEscrever(planilhaIniciar(["https://docs.google.com/spreadsheets/d/1eS1-kBz4N25cB3cP_yPSh4_BNICVYxbJd_6eJqQ9gIo/edit#gid=0"],["Histórico"])[0], orcamentoDadosPlanilha("1", 1, servicoNome, ["1","2","3"], agentesNomes[1], agentesNomes[0], dataFormatoBr(new Date()), dataInserirDias(dataFormatoBr(new Date()),3), documentosIds));*/
+    var emailConsultor = e.parameter.consultor;
+    var nomeConsultor = orcamentoGetNomeConsultor(emailConsultor, planilhaLer(planilhaIniciar(["https://docs.google.com/spreadsheets/d/1LqWmP9lLMysXmQsSISzMHJ23Wy2wsTSpj7LiseM_U00/edit#gid=0"], ["Principal"]), ["A:B"]));
+    var modeloEscolhido = e.parameter.modelo_escolha;
+    var pais = e.parameter.pais;
+    var servicoNome = JSON.parse(e.parameter.servicoNome).data;
+    var servicoClasse = JSON.parse(e.parameter.servicoClasse).data;
+    var servicoQuantidade = JSON.parse(e.parameter.servicoQuantidade).data;
+    var destinatario = 1;
+    var dataPrazo = dataInserirDias(dataFormatoBr(new Date()),3);
+    var agentesNomes = orcamentoGetNomesAgentes(pais);
+
+    var servicoNomeTraduzido = orcamentoGetNomeServicos(servicoNome, agentesNomes[3][0]);
+    var servicoNomeBr = orcamentoGetNomeServicos(servicoNome, "PT");
+    
+    var documentosIds = orcamentoGerarDocumento(destinatario, nomeConsultor, "1", servicoNomeTraduzido, servicoClasse, servicoQuantidade, agentesNomes, agentesNomes, "", dataFormatoEng(new Date()));
+    orcamentoEnviarEmail(agentesNomes[3][0], documentosIds, agentesNomes, emailConsultor);
+    
+    planilhaEscrever(planilhaIniciar(["https://docs.google.com/spreadsheets/d/1eS1-kBz4N25cB3cP_yPSh4_BNICVYxbJd_6eJqQ9gIo/edit#gid=0"],["Histórico"])[0], orcamentoDadosPlanilha(nomeConsultor, modeloEscolhido, servicoNomeBr, servicoClasse, servicoQuantidade, agentesNomes[1], agentesNomes[0], dataFormatoBr(new Date()), dataPrazo, documentosIds, agentesNomes[2]));
+  }catch(e){
+    return false;
+  }
+}
+
+function orcamentoNomePdfs(agentesNomes){
+  try{
+    var resultado = new Array();
+    for(var i=0; i<agentesNomes[1].length; i++){
+      resultado.push("PAP - Budget to " + agentesNomes[1][i] + ".pdf");
+    }
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function orcamentoEnviarEmail(lingua, documentosIds, agentesNomes, emailConsultor){
+  try{
+    var titulo = "Request for information regarding services";
+    var corpo = '<body><div dir="ltr"><center><img src="https://ci5.googleusercontent.com/proxy/xMR_0VPSlRuuA4aswkdIhoGIHsBugr670zoFUCusCPRZxXhwXwvCdeZRt0oP9vSsE8E=s0-d-e1-ft#https://i.imgur.com/GHss3RV.png" alt="" width="400" height="117" class="m_-1903656408855205167gmail-m_-1253232726153350204gmail-CToWUd m_-1903656408855205167gmail-m_-1253232726153350204gmail-a6T m_-1903656408855205167gmail-CToWUd m_-1903656408855205167gmail-a6T CToWUd a6T" style="outline:0px" tabindex="0"><div class="a6S" dir="ltr" style="opacity: 0.01; left: 627px; top: 80px;"><div id=":1lr" class="T-I J-J5-Ji aQv T-I-ax7 L3 a5q" role="button" tabindex="0" aria-label="Fazer o download do anexo " data-tooltip-class="a1V" data-tooltip="Fazer o download"><div class="aSK J-J5-Ji aYr"></div></div></div><br></center><center><p align="justify" style="width:700px"><b>'+ dataFormatoEng(new Date()) +'</b></p><p align="justify" style="width:700px">&nbsp;</p><center><p align="justify" style="width:700px"><span style="font-family:helvetica">Dear Colleagues,</span><br></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><br></span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Please find attached a request for more information on your services. Due to recent issues with fee estimates, we are developing a new and easier way to communicate with you on new business opportunities; if you have any comments or questions, please let us know.</span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Thank you for your assistance with this matter.</span><br></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><br></span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Best regards,</span></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><br></span></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><b><font color="#ff9900">PAP Intellectual Property</font></b></span></p><p align="justify" style="width:700px"><span style="font-size:10pt;font-family:helvetica"><span style="font-size:10pt"><span style="color:rgb(128,128,128)"><strong>Largo Visconde do Cairú, 17, Suite 503 - Centro Histórico - Porto Alegre, RS, Brazil&nbsp;</strong></span></span></span><strong style="color:rgb(128,128,128);font-family:helvetica;font-size:13.3333px">90030-110</strong>&nbsp;<span style="font-size:10pt;font-family:helvetica"><span style="font-size:10pt"><span style="color:rgb(128,128,128)"><strong><br></strong></span><strong><span style="color:rgb(128,128,128)">Phone/Fax: +55 51 3029-5033</span>&nbsp;<br><span style="color:rgb(0,0,255)"><a style="color:rgb(34,34,34)"><span style="color:rgb(0,0,255)">global@pap.com.br</span></a>&nbsp;-&nbsp;<a style="color:rgb(34,34,34)"><span style="color:rgb(0,0,255)"><a href="https://www.pap.com.br">www.pap.com.br</a></span></a></span></strong></span></span></p></center></center></div></body>';
+  
+    if(lingua == "ESP"){
+      titulo = "Solicitud de información sobre servicios";
+      corpo = '<body><div dir="ltr"><center><img src="https://ci5.googleusercontent.com/proxy/xMR_0VPSlRuuA4aswkdIhoGIHsBugr670zoFUCusCPRZxXhwXwvCdeZRt0oP9vSsE8E=s0-d-e1-ft#https://i.imgur.com/GHss3RV.png" alt="" width="400" height="117" class="m_-1779981230372134632gmail-m_-1253232726153350204gmail-CToWUd m_-1779981230372134632gmail-m_-1253232726153350204gmail-a6T m_-1779981230372134632gmail-CToWUd m_-1779981230372134632gmail-a6T CToWUd a6T" style="outline:0px" tabindex="0"><div class="a6S" dir="ltr" style="opacity: 0.01; left: 627px; top: 80px;"><div id=":229" class="T-I J-J5-Ji aQv T-I-ax7 L3 a5q" role="button" tabindex="0" aria-label="Fazer o download do anexo " data-tooltip-class="a1V" data-tooltip="Fazer o download"><div class="aSK J-J5-Ji aYr"></div></div></div><br></center><center><p align="justify" style="width:700px"><b>'+ dataFormatoBr(new Date()) +'</b>&nbsp;<br></p><center><p align="justify" style="width:700px"><font face="helvetica"><br></font></p><p align="justify" style="width:700px"><font face="helvetica">Estimados Colegas,</font></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Please find attached a request for more information on your services. Due to recent issues with fee estimates, we are developing a new and easier way to communicate with you on new business opportunities; if you have any comments or questions, please let us know.</span></p><p align="justify" style="width:700px"><span style="font-family:helvetica">Por favor, encuentre adjunta una solicitud por más informaciones sobre sus servicios.&nbsp;</span>Debido a problemas recientes con tarifarios, estamos desarrollando una forma nueva y más fácil de comunicarnos con ustedes sobre nuevas oportunidades comerciales; si tienen algún comentario o pregunta, háganoslo saber.</p><p align="justify" style="width:700px"><font face="helvetica">Gracias por su asistencia con este asunto.</font></p><p align="justify" style="width:700px"><font face="helvetica">Saludos cordiales desde Brasil.</font></p><p align="justify" style="width:700px"><font face="helvetica"><br></font></p><p align="justify" style="width:700px"><span style="font-family:helvetica"><b><font color="#ff9900">PAP Intellectual Property</font></b></span></p><p align="justify" style="width:700px"><span style="font-size:10pt;font-family:helvetica"><span style="font-size:10pt"><span style="color:rgb(128,128,128)"><strong>Largo Visconde do Cairú, 17, Suite 503 - Centro Histórico - Porto Alegre, RS, Brazil&nbsp;</strong></span></span></span><strong style="color:rgb(128,128,128);font-family:helvetica;font-size:13.3333px">90030-110</strong>&nbsp;<span style="font-size:10pt;font-family:helvetica"><span style="font-size:10pt"><span style="color:rgb(128,128,128)"><strong><br></strong></span><strong><span style="color:rgb(128,128,128)">Phone/Fax: +55 51 3029-5033</span>&nbsp;<br><span style="color:rgb(0,0,255)"><a><span style="color:rgb(0,0,255)">global@pap.com.br</span></a>&nbsp;-&nbsp;<a><span style="color:rgb(0,0,255)"><a href="https://www.pap.com.br">www.pap.com.br</a></span></a></span></strong></span></span></p></center></center></div></body>';
+    }
+  
+    gmailEnviar(documentosIds, orcamentoNomePdfs(agentesNomes), agentesNomes[0], titulo, corpo, emailConsultor + ",global@pap.com.br", emailConsultor);
+  }catch(e){
+    return false;
+  }
+}
+
+function orcamentoGetNomeConsultor(emailConsultor, dados){
+  try{
+    var resultado = emailConsultor;
+	for(var i=0; i<dados[0][0].length; i++){
+      if(dados[0][0][i][0] == emailConsultor){
+        resultado = dados[0][0][i][1];
+        break;
+      }
+	}
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
+
+function orcamentoGetNomeServicos(servicos, idioma){
+  try{
+    var planilha = planilhaIniciar(["https://docs.google.com/spreadsheets/d/1lDAsM5JAAo9Cj-ecLq5PWD7eCnucdZT8JqJwNu9RAOo/edit#gid=118697127"], ["Internacional"]);
+    var dados = planilhaLer(planilha, ["A:C"]);
+    var nomeServicosAtualizado = new Array();
+    if(idioma == "ING"){
+      for(var i=0; i<servicos.length; i++){
+        nomeServicosAtualizado.push(dados[0][0][parseInt(servicos[i] - 1)][1]);
+      }
+    }else if(idioma == "ESP"){
+      for(var i=0; i<servicos.length; i++){
+        nomeServicosAtualizado.push(dados[0][0][parseInt(servicos[i] - 1)][2]);
+      }
+    }else{
+      for(var i=0; i<servicos.length; i++){
+        nomeServicosAtualizado.push(dados[0][0][parseInt(servicos[i] - 1)][0]);
+      }
+    }
+    return nomeServicosAtualizado;
+  }catch(e){
+    return false;
+  }
+}
+
+function orcamentoGetNomesAgentes(pais){
+  var sheet = planilhaIniciar(["https://docs.google.com/spreadsheets/d/115xBGp1gKe1Atg0QhhlO_1XAcT2a03T3M_FvfdskPgg/edit#gid=0"], ["Principal"]);
+  var dados = planilhaLer(sheet, ["A:F"]);
+  var agentesEmails = new Array();
+  var agentesNomes = new Array();
+  var agentesPaisesIngles = new Array();
+  var agentesIdiomas = new Array();
+  var resultado = new Array();
+	
+  for(var i=0; i<dados[0][0].length; i++){
+    if(dados[0][0][i][1] == pais){
+      agentesEmails.push(dados[0][0][i][0]);
+      agentesNomes.push(dados[0][0][i][2]);
+      agentesPaisesIngles.push(dados[0][0][i][3]);
+      agentesIdiomas.push(dados[0][0][i][5]);
+    }
+  }
+  
+  resultado.push(agentesEmails);
+  resultado.push(agentesNomes);
+  resultado.push(agentesPaisesIngles);
+  resultado.push(agentesIdiomas);
+  
+  return resultado;
+}
+
+function orcamentoGerarDocumento(agenteEscolha, consultor, modeloEscolha, servicoNome, servicoClasse, servicoQuantidade, agentePaisIngles, agentesNomes, prazoResposta, data){
+	try{
+      var url = "https://script.google.com/macros/s/AKfycbytCs7rosu77A5UQVV7cg7ldH2TGJKWb3ad74oMlHYZiYCQPZb7/exec";
+      var quantidadeEnvios = agentesNomes[1].length;
+      var resultado = new Array();
+      
+		if(agenteEscolha == 0){ quantidadeEnvios = 1; }
+	
+		for(var i=0; i<quantidadeEnvios; i++){
+          var parametros = {
+            "formulario" : "orcamento",
+            "consultor" : consultor,
+            "modelo" : agentesNomes[3][i],
+            "servicosNomes" : JSON.stringify({"data" : servicoNome}),
+            "servicosClasses" : JSON.stringify({"data" : servicoClasse}),
+            "servicosQuantidades" : JSON.stringify({"data" : servicoQuantidade}),
+            "servicoPais" : agentesNomes[2][i],
+            "agente" : agentesNomes[1][i],
+            "prazo" : prazoResposta,
+            "data" : data
+          };
+				
+          var options = {
+            "method" : "POST",  
+            "followRedirects" : true,
+            "muteHttpExceptions": true,
+            "payload" : parametros
+          };
+			
+          var resultadoPost = UrlFetchApp.fetch(url,options);
+          if (resultadoPost.getResponseCode() == 200) {
+            var params = JSON.parse(resultadoPost.getContentText());
+            var id = params.data;
+            resultado.push(id);
+          }
+		}
+	return resultado;
+  }catch(e){
+    return false;
+  }  
+}
+
+function orcamentoDadosPlanilha(nomeConsultor, modeloEscolhido, servicoNome, servicoClasse, servicoQuantidade, agentesNomes, agentesEmails, dataAtual, dataPrazo, documentosIds, agentesPaises){
+  try{
+    var resultado = new Array();
+    var juncaoServicosQuantidade = "";
+    var juncaoAgentes = "";
+    var juncaoAnexos = "";
+    
+    for(var i=0; i<servicoNome.length; i++){
+      juncaoServicosQuantidade = juncaoServicosQuantidade + "Serviço: " + servicoNome[i] +  "  Classe: " + servicoClasse[i] + "  Quantidade: " + servicoQuantidade[i] + "\n";
+    }
+    
+    for(var i=0; i<agentesNomes.length; i++){
+      juncaoAgentes = juncaoAgentes + "Nome: " + agentesNomes[i] + "  Pais: " + agentesPaises[i] + "  E-mail: " + agentesEmails[i] + "\n";
+    }
+    
+    for(var i=0; i<agentesNomes.length; i++){
+      juncaoAnexos = juncaoAnexos + "Agente: " + agentesNomes[i] + "  Documento: https://docs.google.com/document/d/" + documentosIds[i] + "\n";
+    }
+    
+    resultado.push(dataAtual);
+    resultado.push(dataPrazo);
+    resultado.push(nomeConsultor);
+    resultado.push(juncaoServicosQuantidade);
+    resultado.push(juncaoAgentes);
+    resultado.push(juncaoAnexos);
+    
+    return resultado;
+  }catch(e){
+    return false;
+  }
+}
